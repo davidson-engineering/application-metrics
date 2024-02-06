@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 # ----------------------------------------------------------------------------
 # Created By  : Matthew Davidson
-# Created Date: 2023-01-23
-# version ='1.0'
+# Created Date: 2024-02-02
+# Copyright © 2024 Davidson Engineering Ltd.
 # ---------------------------------------------------------------------------
-"""Application statistics"""
+"""Application Metrics"""
 # ---------------------------------------------------------------------------
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ import time
 
 
 @dataclass
-class ApplicationStatistics:
+class ApplicationMetrics:
     name: str = "statistics"
     class_: str = "metrics_agent"
     instance_id: int = 0
@@ -24,19 +24,19 @@ class ApplicationStatistics:
         setattr(self, field, getattr(self, field) + value)
 
     def reset(self):
-        for field in self.stats_fields:
+        for field in self._stats_fields:
             setattr(self, field, 0)
 
     @property
-    def stats_fields(self):
+    def _stats_fields(self):
         return [
             field
             for field in self.__dataclass_fields__
-            if field not in ApplicationStatistics.__dataclass_fields__
+            if field not in ApplicationMetrics.__dataclass_fields__
         ]
 
     def build_metrics(self):
-        fields = {field: getattr(self, field) for field in self.stats_fields}
+        fields = {field: getattr(self, field) for field in self._stats_fields}
         self.reset()
         return {
             "measurement": self.name,
@@ -49,10 +49,11 @@ class ApplicationStatistics:
             },
         }
 
+
 @dataclass
-class SessionStatistics:
-    total_stats: ApplicationStatistics = field(default_factory=ApplicationStatistics)
-    period_stats: ApplicationStatistics = field(default_factory=ApplicationStatistics)
+class SessionMetrics(ApplicationMetrics):
+    total_stats: ApplicationMetrics = field(default_factory=ApplicationMetrics)
+    period_stats: ApplicationMetrics = field(default_factory=ApplicationMetrics)
 
     def increment(self, field: str, value: int = 1):
         self.period_stats.increment(field, value)
