@@ -1,4 +1,4 @@
-from app_stats import ApplicationMetrics, SessionMetrics
+from application_metrics import ApplicationMetrics, SessionMetrics
 from dataclasses import dataclass
 
 
