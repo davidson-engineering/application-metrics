@@ -1,9 +1,9 @@
-from app_stats import ApplicationStats, SessionStatistics
+from app_stats import ApplicationMetrics, SessionMetrics
 from dataclasses import dataclass
 
 
 def test_application_stats():
-    stats = ApplicationStats()
+    stats = ApplicationMetrics()
     assert stats.name == "statistics"
     assert stats.class_ == "metrics_agent"
     assert stats.instance_id == 0
@@ -12,7 +12,7 @@ def test_application_stats():
 
 
 def test_session_statistics():
-    stats = SessionStatistics()
+    stats = SessionMetrics()
     assert stats.total_stats.name == "statistics"
     assert stats.total_stats.class_ == "metrics_agent"
     assert stats.total_stats.instance_id == 0
@@ -27,7 +27,7 @@ def test_session_statistics():
 
 def test_custom_type():
     @dataclass
-    class CustomStats(ApplicationStats):
+    class CustomStats(ApplicationMetrics):
         some_field: int = 0
 
     custom_stats = CustomStats(
@@ -44,7 +44,7 @@ def test_custom_type():
     custom_stats.reset()
     assert custom_stats.some_field == 0
 
-    class CustomSessionStats(SessionStatistics):
+    class CustomSessionStats(SessionMetrics):
         def __init__(self):
             super().__init__(
                 total_stats=CustomStats(

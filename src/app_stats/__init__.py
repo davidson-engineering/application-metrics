@@ -1,3 +1,3 @@
 __version__ = "0.0.1"
 
-from app_stats.app_stats import ApplicationStats, SessionStatistics
+from app_stats.app_stats import ApplicationMetrics, SessionMetrics
