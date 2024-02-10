@@ -5,7 +5,7 @@ import time
 def test_client(db_client):
 
     assert db_client.client
-    assert db_client.local_tz == "America/Vancouver"
+    assert db_client.local_tz == "UTC"
     assert db_client.client.default_bucket == "testing"
 
     # Write some data to database
