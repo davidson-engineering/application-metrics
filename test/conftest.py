@@ -25,7 +25,7 @@ def test_metrics():
 
 
 @pytest.fixture
-def metrics_agent():
+def db_client():
     from application_metrics.client import InfluxDatabaseClient
 
     client = InfluxDatabaseClient(
