@@ -34,10 +34,10 @@ def load_config(filepath: Union[str, Path]) -> dict:
             return yaml.safe_load(file)
     # if extension is .toml
     if filepath.suffix == ".toml":
-        import toml
+        import tomli
 
         with open(filepath, "r") as file:
-            return toml.load(file)
+            return tomli.load(file)
 
     # else load as binary
     with open(filepath, "rb") as file:
@@ -80,7 +80,6 @@ class ApplicationMetricsBase:
         return {field: getattr(self, field) for field in self._stats_fields}
 
     def build_metrics(self):
-        self.reset()
         return {
             "measurement": self.name,
             "fields": self.fields,

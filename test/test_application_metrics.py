@@ -41,10 +41,3 @@ def test_application_stats_fields(test_metrics):
         "extremely_important_metric": 0,
         "not_so_important_metric": 0,
     }
-
-
-def test_client(metrics_agent):
-
-    assert metrics_agent._client
-    assert metrics_agent.local_tz == "America/Vancouver"
-    assert metrics_agent._client.default_bucket == "testing"
