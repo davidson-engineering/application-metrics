@@ -55,10 +55,10 @@ class InfluxDatabaseClient:
         write_precision: Union[str, WritePrecision] = WritePrecision.NS,
         default_bucket: str = "testing",
     ):
-        self._client = InfluxDBClient.from_config_file(
+        self.client = InfluxDBClient.from_config_file(
             config, write_precision=write_precision
         )
-        self._client.default_bucket = default_bucket
+        self.client.default_bucket = default_bucket
         self.local_tz = local_tz
 
     def convert(self, metric: Union[tuple, dict, dataclass]) -> dict:
@@ -107,4 +107,4 @@ class InfluxDatabaseClient:
             msg = f"Error converting metrics: {e}. Continuing..."
             logger.error(msg)
             return
-        self._client.write_metric(metrics)
+        self.client.write_metric(metrics)
