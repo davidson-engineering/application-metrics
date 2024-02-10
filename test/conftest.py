@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import pytest
 
 INFLUXDB_TESTING_CONFIG_FILEPATH = "test/influxdb_testing_config.toml"
-LOCAL_TZ = "America/Vancouver"
+LOCAL_TZ = "UTC"
 
 
 @dataclass
