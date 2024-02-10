@@ -107,7 +107,8 @@ class InfluxDatabaseClient:
             msg = f"Error converting metrics: {e}. Continuing..."
             logger.error(msg)
             return
-        self.client.write_metric(metrics)
+        with self.client.write_api() as write_api:
+            write_api.write(self.client.default_bucket, self.client.org, metrics)
 
     def ping(self):
         return self.client.ping()
