@@ -108,3 +108,6 @@ class InfluxDatabaseClient:
             logger.error(msg)
             return
         self.client.write_metric(metrics)
+
+    def ping(self):
+        return self.client.ping()
