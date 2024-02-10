@@ -24,10 +24,10 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 
-# dependencies = [
-#    "numpy",
-#    "my_module @ git+https://github.com/my_github/my_repo.git@tag", 
-# ]
+dependencies = [
+   "pytz",
+   "influxdb-client[ciso]", 
+]
 
 # If a module, then use fetch version from src/module_name/__init__.py
 [tool.setuptools.dynamic]
