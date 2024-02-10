@@ -74,10 +74,10 @@ class InfluxDatabaseClient:
                 logger.warning(
                     "Metric has been passed as a tuple. Assuming format (measurement, fields, time, tags). Unexpected behaviour may occur."
                 )
-                if isinstance(metric[2], dict):
-                    fields = metric[2]
+                if isinstance(metric[1], dict):
+                    fields = metric[1]
                 else:
-                    fields = dict(value=metric[2])
+                    fields = dict(value=metric[1])
                 if len(metric) == 4:
                     tags = metric[3]
                 else:
