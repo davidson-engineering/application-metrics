@@ -2,7 +2,7 @@ from application_metrics import ApplicationMetricsBase
 from dataclasses import dataclass
 import pytest
 
-INFLUXDB_TESTING_CONFIG_FILEPATH = "test/influx_testing_config.toml"
+INFLUXDB_TESTING_CONFIG_FILEPATH = "test/influxdb_testing_config.toml"
 LOCAL_TZ = "America/Vancouver"
 
 
