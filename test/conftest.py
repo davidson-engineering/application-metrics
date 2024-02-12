@@ -6,6 +6,12 @@ import pytest
 INFLUXDB_TESTING_CONFIG_FILEPATH = "test/influxdb_testing_config.toml"
 LOCAL_TZ = "UTC"
 
+from fast_database_clients import FastInfluxDBClient
+
+client = FastInfluxDBClient.from_config_file(
+    config_file=INFLUXDB_TESTING_CONFIG_FILEPATH
+)
+
 
 @dataclass
 class TestMetrics(ApplicationMetricsBase):
@@ -18,22 +24,15 @@ class TestMetrics(ApplicationMetricsBase):
     extremely_important_metric: int = 0
     not_so_important_metric: int = 0
 
+
 @pytest.fixture
 def test_metrics():
-    from application_metrics import ApplicationMetricsBase
-
     test_metrics = TestMetrics()
-    test_metrics.client = database_client()
+    test_metrics.client = client
 
     return test_metrics
 
 
-
 @pytest.fixture
 def database_client():
-    from fast_database_clients import FastInfluxDBClient
-
-    client = FastInfluxDBClient.from_config_file(config_file=INFLUXDB_TESTING_CONFIG_FILEPATH)
-
-
     return client

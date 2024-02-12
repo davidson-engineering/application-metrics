@@ -41,3 +41,25 @@ def test_application_stats_fields(test_metrics):
         "extremely_important_metric": 0,
         "not_so_important_metric": 0,
     }
+
+
+def test_application_stats_request_measurements(test_metrics):
+
+    test_metrics.counter("important_metric")
+    test_metrics.counter("another_metric", 10)
+    test_metrics.counter("extremely_important_metric", 10)
+    test_metrics.counter("not_so_important_metric", 10)
+
+    measurements = test_metrics.request_measurements()
+
+    assert measurements == {
+        "important_metric": 1,
+        "another_metric": 10,
+        "extremely_important_metric": 10,
+        "not_so_important_metric": 10,
+    }
+
+    assert test_metrics.important_metric == 0
+    assert test_metrics.another_metric == 0
+    assert test_metrics.extremely_important_metric == 0
+    assert test_metrics.not_so_important_metric == 0

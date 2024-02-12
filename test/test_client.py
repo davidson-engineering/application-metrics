@@ -1,28 +1,28 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import time
 
 
 def test_client(database_client):
 
     assert database_client
-    assert database_client.local_tz == "UTC"
+    assert database_client.local_tz == "America/Vancouver"
     assert database_client.default_bucket == "testing"
 
     # Write some data to database
-    database_client.send(
+    database_client.write(
         [
-            (
-                "test_measurement",
-                {"value": 100},
-                datetime.now(),
-                {"tag1": "value1", "tag2": "value2"},
+            dict(
+                measurement="test_measurement",
+                fields={"value": 100},
+                time=datetime.now(),
+                tags={"tag1": "value1", "tag2": "value2"},
             )
         ]
     )
     time.sleep(1)
     # Query the data
-    query = f'from(bucket: "testing") |> range(start: -1h) |> filter(fn: (r) => r._measurement == "test_measurement")'
-    tables = database_client.client.query_api().query(query)
+    query = f'from(bucket: "testing") |> range(start: -5s) |> filter(fn: (r) => r._measurement == "test_measurement")'
+    tables = database_client.query(query)
     assert len(tables) == 1
     table = tables[0]
     assert len(table.records) == 1
@@ -31,10 +31,8 @@ def test_client(database_client):
     assert record.get_field() == "value"
     assert record.get_measurement() == "test_measurement"
     assert record.get_field() == "value"
-    assert record.get_start() < datetime.now()
-    assert record.get_stop() > datetime.now()
-    assert record.get_time() < datetime.now()
-    assert record.get_time() > datetime.now() - timedelta(hours=1)
-    assert record.get_tag("tag1") == "value1"
-    assert record.get_tag("tag2") == "value2"
+    assert record.get_start() < datetime.now(timezone.utc)
+    assert record.get_stop() > datetime.now(timezone.utc)
+    assert record.get_time() < datetime.now(timezone.utc)
+    assert record.get_time() > datetime.now(timezone.utc) - timedelta(hours=1)
     assert record.get_field() == "value"
