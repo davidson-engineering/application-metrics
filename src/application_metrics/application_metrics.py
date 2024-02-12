@@ -9,6 +9,7 @@
 # ---------------------------------------------------------------------------
 
 from __future__ import annotations
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Union
@@ -45,20 +46,23 @@ def load_config(filepath: Union[str, Path]) -> dict:
 
 
 @dataclass
-class ApplicationMetricsBase:
+class ApplicationMetricsBase(ABC):
     name: str = "statistics"
     class_: str = "metrics_agent"
     instance_id: int = 0
     hostname: str = "localhost"
 
-    def client_from_file(self, config: Union[str, Path]):
-        from influxdb_client import InfluxDBClient, WritePrecision
-
-        config = load_config(config)
-        self.client = InfluxDBClient.from_config_file(
-            config, write_precision=WritePrecision.NS
-        )
-        return self
+    @property
+    def client(self):
+        if not hasattr(self, "_client"):
+            raise AttributeError("Client is not set")
+        return self._client
+        
+    @client.setter
+    def client(self, value):
+        self._client = value
+        ...
+    
 
     def counter(self, field: str, value: int = 1):
         setattr(self, field, getattr(self, field) + value)
@@ -90,3 +94,4 @@ class ApplicationMetricsBase:
                 "instance_id": self.instance_id,
             },
         }
+

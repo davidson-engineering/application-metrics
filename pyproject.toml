@@ -26,7 +26,7 @@ classifiers = [
 
 dependencies = [
    "pytz >= 2024.1",
-   "influxdb-client[ciso] >= 1.40.0",
+   "fast-database-clients @ git+https://github.com/davidson-engineering/fast-database-clients.git@v2.0.0",
    "tomli >= 2.0.1",
 ]
 

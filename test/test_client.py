@@ -2,14 +2,14 @@ from datetime import datetime, timedelta
 import time
 
 
-def test_client(db_client):
+def test_client(database_client):
 
-    assert db_client.client
-    assert db_client.local_tz == "UTC"
-    assert db_client.client.default_bucket == "testing"
+    assert database_client
+    assert database_client.local_tz == "UTC"
+    assert database_client.default_bucket == "testing"
 
     # Write some data to database
-    db_client.send(
+    database_client.send(
         [
             (
                 "test_measurement",
@@ -22,7 +22,7 @@ def test_client(db_client):
     time.sleep(1)
     # Query the data
     query = f'from(bucket: "testing") |> range(start: -1h) |> filter(fn: (r) => r._measurement == "test_measurement")'
-    tables = db_client.client.query_api().query(query)
+    tables = database_client.client.query_api().query(query)
     assert len(tables) == 1
     table = tables[0]
     assert len(table.records) == 1

@@ -7,3 +7,8 @@
     auth_basic = false
     # profilers="query, operator"
     # proxy = "http://proxy.domain.org:8080"
+
+[db_client.influx]
+    default_bucket = "my_bucket"
+    default_write_precision = "ns"
+    write_batch_size = 5000
